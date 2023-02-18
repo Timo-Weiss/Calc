@@ -5,10 +5,11 @@ import java.util.regex.Pattern;
 public class Main {
     public static void main (String[] args){
         System.out.println(
-            "CALCULATOR\n" +
-            "It can receive an integer numbers from 1 to 10\n" +
-            "The numbers can be written in Arabic or Roman numerals\n" +
-            "Enter an math expression (for example: 7*5 or X-VIII):"
+            """
+                CALCULATOR
+                It can receive an integer numbers from 1 to 10
+                The numbers can be written in Arabic or Roman numerals
+                Enter a math expression (for example: 7*5 or X-VIII):"""
         );
         Scanner in = new Scanner(System.in);
         String s = calc(in.nextLine());
@@ -17,7 +18,7 @@ public class Main {
     }
     public static String calc(String input) {
         String o;
-        String[] a = new String[2];
+        String[] a;
         if (indexOfRegEx(input, "[^\\+\\-\\*\\/\\dIVXivx]") >-1 ||
             indexOfRegEx(input, "[\\+\\-\\*\\/]{2,}") >-1
            ){
@@ -79,22 +80,12 @@ public class Main {
         };
         System.out.println(a[e]);
     }
-
-    /*
-    private static boolean isNumeric(String strNum) {
-        Pattern pattern = Pattern.compile("[\\D]+");
-        if (strNum == null) {
-            return false;
-        }
-        return !pattern.matcher(strNum).matches();
-    }
-    */
     private static byte checkType(String[] a){
         byte r = 0;
         byte d = 0;
-        for(int i = 0; i < a.length; i++){
-            if (indexOfRegEx(a[i], "\\D") > -1) r++;
-            if (indexOfRegEx(a[i], "\\d") > -1) d++;
+        for (String s : a) {
+            if (indexOfRegEx(s, "\\D") > -1) r++;
+            if (indexOfRegEx(s, "\\d") > -1) d++;
         }
         if (d == a.length && r == 0) {return 1;}
         else if (r == a.length && d == 0) {return 2;}
@@ -111,23 +102,14 @@ public class Main {
         }
         return b;
     }
-
     private static String calculate(String o, int[] b, boolean roman){
-        int r = 0;
-        switch (o) {
-            case ("+"):
-                r = b[0] + b[1];
-                break;
-            case ("-"):
-                r = b[0] - b[1];
-                break;
-            case ("*"):
-                r = b[0] * b[1];
-                break;
-            case ("/"):
-                r = b[0] / b[1];
-                break;
-        }
+        int r = switch (o) {
+            case ("+") -> b[0] + b[1];
+            case ("-") -> b[0] - b[1];
+            case ("*") -> b[0] * b[1];
+            case ("/") -> b[0] / b[1];
+            default -> 0;
+        };
         if (roman) {
             if (r > 0){return ator(r);}
             else return "";
@@ -146,14 +128,14 @@ public class Main {
         }
         return r;
     }
-    private static int rtoa(String ss){
+    private static int rtoa(String roman){
         int[] A = {4, 9, 40, 90, 1, 5, 10, 50, 100};
         String[] R = {"IV", "IX", "XL", "XC", "I", "V", "X", "L", "C"};
-        String s = ss.toUpperCase();
+        String s = roman.toUpperCase();
         int r = 0;
         int i = 0;
         while (i < R.length && s.length() > 0){
-            while (s.indexOf(R[i]) > -1){
+            while (s.contains(R[i])){
                 s = s.replaceFirst(R[i], "");
                 r += A[i];
             }
