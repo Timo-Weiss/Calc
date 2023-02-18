@@ -19,21 +19,22 @@ public class Main {
     public static String calc(String input) {
         String o;
         String[] a;
-        if (indexOfRegEx(input, "[^\\+\\-\\*\\/\\dIVXivx]") >-1 ||
+        if (indexOfRegEx(input, "[^\\+\\-\\*\\/\\d IVXivx]") >-1 ||
             indexOfRegEx(input, "[\\+\\-\\*\\/]{2,}") >-1
            ){
             printError(0);
             return "";
         }
-        int i = indexOfRegEx(input, "[\\+\\-\\*\\/]");
+        String in = input.replace(" ", "");
+        int i = indexOfRegEx(in, "[\\+\\-\\*\\/]");
         try{
-            o = input.substring(i, i+1);
+            o = in.substring(i, i+1);
         } catch (StringIndexOutOfBoundsException e) {
             printError(1);
             return "";
         }
         try{
-            a = input.split("\\"+o);
+            a = in.split("\\"+o);
             if (a[0].isEmpty() || a[1].isEmpty()){
                 printError(2);
                 return "";
