@@ -18,14 +18,13 @@ public class Main {
     public static String calc(String input) {
         String o;
         String[] a = new String[2];
-        int i = indexOfRegEx(input, "[^\\+\\-\\*\\/\\dIVXivx]");
         if (indexOfRegEx(input, "[^\\+\\-\\*\\/\\dIVXivx]") >-1 ||
             indexOfRegEx(input, "[\\+\\-\\*\\/]{2,}") >-1
            ){
             printError(0);
             return "";
         }
-        i = indexOfRegEx(input, "[\\+\\-\\*\\/]");
+        int i = indexOfRegEx(input, "[\\+\\-\\*\\/]");
         try{
             o = input.substring(i, i+1);
         } catch (StringIndexOutOfBoundsException e) {
