@@ -2,58 +2,61 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Calculator {
-    public static void main(String[] args) {
+public class Main {
+    public static void main (String[] args){
         System.out.println(
-                "CALCULATOR\n" +
-                "It can receive an integer numbers from 1 to 10\n" +
-                "The numbers can be written in Arabic or Roman numerals\n" +
-                "Enter an math expression (for example: 7*5 or X-VIII):"
+            "CALCULATOR\n" +
+            "It can receive an integer numbers from 1 to 10\n" +
+            "The numbers can be written in Arabic or Roman numerals\n" +
+            "Enter an math expression (for example: 7*5 or X-VIII):"
         );
-
         Scanner in = new Scanner(System.in);
-        String s = in.nextLine();
+        String s = calc(in.nextLine());
         in.close();
+        if (!s.isEmpty()) System.out.println(s);
+    }
+    public static String calc(String input) {
         String o;
         String[] a = new String[2];
-        int i = indexOfRegEx(s, "[^\\+\\-\\*\\/\\dIVXivx]");
-        if (i>-1){
+        int i = indexOfRegEx(input, "[^\\+\\-\\*\\/\\dIVXivx]");
+        if (indexOfRegEx(input, "[^\\+\\-\\*\\/\\dIVXivx]") >-1 ||
+            indexOfRegEx(input, "[\\+\\-\\*\\/]{2,}") >-1
+           ){
             printError(0);
-            return;
+            return "";
         }
-        i = indexOfRegEx(s, "[\\+\\-\\*\\/]");
+        i = indexOfRegEx(input, "[\\+\\-\\*\\/]");
         try{
-            o = s.substring(i, i+1);
+            o = input.substring(i, i+1);
         } catch (StringIndexOutOfBoundsException e) {
             printError(1);
-            return;
+            return "";
         }
         try{
-            a = s.split("\\"+o);
+            a = input.split("\\"+o);
             if (a[0].isEmpty() || a[1].isEmpty()){
                 printError(2);
-                return;
+                return "";
             }
         } catch (ArrayIndexOutOfBoundsException e){
             printError(2);
-            return;
+            return "";
         }
         byte n = checkType(a);
         if (n > 0) {
             int[] b = parseAndCheck(a, n == 2);
             if (b[0] < 1) {
                 printError(3);
-                return;
+                return "";
             }
             String c = calculate(o, b, n == 2);
             if (c.isEmpty()){
                 printError(5);
-                return;
-            } else System.out.println(c);
-            return;
+                return "";
+            } else return c;
         } else {
             printError(4);
-            return;
+            return "";
         }
     }
 
@@ -68,9 +71,9 @@ public class Calculator {
     }
     private static void printError(int e){
         String[] a = {
-                "Error: inadmissible symbol(s)",
+                "Error: inadmissible symbol(s) or wrong expression",
                 "Error: math operation symbol is missing or invalid.",
-                "Error: there are invalid or no operand(s).",
+                "Error: the expression is wrong.",
                 "Error: the operands must be in range 1 to 10",
                 "Error: the operands isn't the same type or incorrect",
                 "Error: invalid operation for set of operands."
