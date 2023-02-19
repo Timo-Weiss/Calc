@@ -19,13 +19,14 @@ public class Main {
     public static String calc(String input) {
         String o;
         String[] a;
-        if (indexOfRegEx(input, "[^\\+\\-\\*\\/\\d IVXivx]") >-1 ||
-            indexOfRegEx(input, "[\\+\\-\\*\\/]{2,}") >-1
+        String in = input.replace(" ", "");
+        if (indexOfRegEx(in, "[^\\+\\-\\*\\/\\dIVXivx]") >-1 ||
+            indexOfRegEx(in, "[\\+\\-\\*\\/]{2,}") >-1
            ){
             printError(0);
             return "";
         }
-        String in = input.replace(" ", "");
+
         int i = indexOfRegEx(in, "[\\+\\-\\*\\/]");
         try{
             o = in.substring(i, i+1);
@@ -72,11 +73,11 @@ public class Main {
     }
     private static void printError(int e){
         String[] a = {
-                "Error: inadmissible symbol(s) or wrong expression",
+                "Error: inadmissible symbol(s) or wrong expression.",
                 "Error: math operation symbol is missing or invalid.",
                 "Error: the expression is wrong.",
-                "Error: the operands must be in range 1 to 10",
-                "Error: the operands isn't the same type or incorrect",
+                "Error: the operands must be in range 1 to 10.",
+                "Error: the operands isn't the same type or incorrect.",
                 "Error: invalid operation for set of operands."
         };
         System.out.println(a[e]);
